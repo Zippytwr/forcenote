@@ -1,0 +1,58 @@
+# Общие исключения
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Монорепо и рабочие окружения
+pnpm-lock.yaml
+yarn.lock
+lerna-debug.log
+.nx/
+*.tgz
+
+# Бэкенд (NestJS)
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/.env
+backend/.env.local
+backend/.env.*.local
+backend/*.tsbuildinfo
+backend/package-lock.json
+
+# Фронтенд (React/Vite/TS)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/*.tsbuildinfo
+frontend/package-lock.json
+
+# Vite специфичные
+frontend/public/*.cache
+frontend/.vite
+frontend/.vite-cache
+
+# Logs and cache
+*.log
+.cache/
+tmp/
+coverage/
+
+# OS-specific files
+Thumbs.db
+.DS_Store
