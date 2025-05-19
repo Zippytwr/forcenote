@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Note } from 'src/notes/entities/note.entity';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
                     password: configService.get<string>("DATABASE_PASSWORD"),
                     database: configService.get<string>("DATABASE_NAME"),
                     entities: [
+                        Note
                     ],
                     synchronize: true,
                 }
@@ -24,6 +26,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         }),
         TypeOrmModule.forFeature([
+            Note
         ])
     ],
     exports: [
