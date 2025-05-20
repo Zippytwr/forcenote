@@ -15,7 +15,7 @@ export class NotesService {
   create(createNoteDto: CreateNoteDto): Promise<Note> {
     const note = this.noteRepository.create({
       id: uuidv4(),
-      title: "Default Title",
+      title: createNoteDto.title,
       content: "",
       create_at: new Date(),
       updated_at: new Date(),
