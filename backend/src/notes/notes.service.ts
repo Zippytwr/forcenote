@@ -16,7 +16,7 @@ export class NotesService {
     const note = this.noteRepository.create({
       id: uuidv4(),
       title: createNoteDto.title,
-      content: "",
+      content: createNoteDto.content,
       create_at: new Date(),
       updated_at: new Date(),
     })
@@ -28,6 +28,10 @@ export class NotesService {
 
   findAll(): Promise<Note[]> {
     return this.noteRepository.find();
+  }
+
+  find(id: string): Promise<Note[]> {
+    return this.noteRepository.find({where: {id: id}})
   }
   async update(id: string, updateNoteDto: UpdateNoteDto): Promise<Note> {
     const note = await this.noteRepository.findOneBy({ id });

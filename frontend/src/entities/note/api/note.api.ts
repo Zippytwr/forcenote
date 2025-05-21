@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Note } from "../model/type";
+import type { Note, updateNoteInterface } from "../model/type";
 
 
 const url = import.meta.env.VITE_API_URL
@@ -15,8 +15,9 @@ export default class noteApi {
             data: { id }
         });
     }
-    static patch() {
-
+    static patch(route: string, updateNoteInterface: updateNoteInterface) {
+        const response = axios.patch(url + route, updateNoteInterface)
+        return response
     }
     static getAll(route: string) {
         const repsonse = axios.get(url + route)
