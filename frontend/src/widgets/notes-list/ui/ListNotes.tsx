@@ -1,26 +1,15 @@
 import { useEffect, useState } from "react";
 import type { Note } from "../../../entities/note/model/type"
-import { listNote } from "../model/listNotes"
+import { noteStore } from "../../../entities/note/model/note.store";
+import { observer } from "mobx-react";
 
 
-export const ListNotes = () => {
-    const [notes, setNotes] = useState<Note[]>([]);
-    const [loading, setLoading] = useState(true);
-
+export const ListNotes = observer(() => {
     useEffect(() => {
-        const fetchNotes = async () => {
-            try {
-                const data = await listNote();
-                setNotes(data);
-            } catch (error) {
-                console.error("Ошибка при загрузке заметок:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchNotes();
-    }, []);
+        noteStore.fetchNotes()
+    }, [])
+    const notes = noteStore.notes
+    const loading = noteStore.loading
 
     if (loading) return <div>Загрузка...</div>;
     return (
@@ -33,4 +22,4 @@ export const ListNotes = () => {
             ))}
         </div>
     )
-}
+})
