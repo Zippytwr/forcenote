@@ -6,7 +6,7 @@ import { Note } from './entities/note.entity';
 
 @Controller('notes')
 export class NotesController {
-  constructor(private readonly notesService: NotesService) {}
+  constructor(private readonly notesService: NotesService) { }
   @Post("create")
   create(@Body() createNoteDto: CreateNoteDto) {
     return this.notesService.create(createNoteDto)
@@ -28,6 +28,12 @@ export class NotesController {
     @Body() updateNoteDto: UpdateNoteDto,
   ): Promise<Note> {
     return this.notesService.update(id, updateNoteDto);
+  }
+  @Get(":id")
+  getOne(
+    @Param('id') id: string
+  ) {
+    return this.notesService.find(id)
   }
 
 }
