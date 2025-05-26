@@ -1,6 +1,5 @@
 import { ConfigService } from "@nestjs/config";
-import { genSalt } from "bcrypt";
-import { hash } from "crypto";
+import { genSalt, hash } from "bcrypt";
 import { Note } from "src/notes/entities/note.entity";
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, BeforeInsert, BeforeUpdate } from "typeorm";
 
@@ -14,10 +13,11 @@ export class User {
     password: string
     @OneToMany(() => Note, note => note.user)
     notes: Note[];
+    
     @BeforeInsert()
     @BeforeUpdate()
     async hashPasswords (configService: ConfigService) {
         const salt = await genSalt()
-        this.password = await hash(this.password + process.env.PEPPER , salt)
+        this.password = await hash(this.password + String(process.env.PEPPER), salt)
     }
 }

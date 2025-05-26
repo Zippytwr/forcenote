@@ -13,16 +13,28 @@ export class UsersService {
     private userRepository: Repository<User>
   ) { }
   create(createUserDto: CreateUserDto) {
-    return this.userRepository.create({
+    const user = this.userRepository.create({
       id: uuidv4(),
       username: createUserDto.username,
       password: createUserDto.password
     })
+    return this.userRepository.save(user, {reload: true})
+  
   }
-  getAll(updateUserDto: UpdateUserDto) {
+  getAll() {
     return this.userRepository.find()
   }
   findById(id: string) {
-    return this.userRepository.find({where: {id: id}})
+    return this.userRepository.find({ where: { id: id } })
   }
+  async findByUsername(username: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({ where: { username: username } })
+    return user
+  }
+  async delete(id: string) {
+    const user = this.userRepository.findBy({id: id})
+    return this.userRepository.delete(id)
+  }
+
+
 }
