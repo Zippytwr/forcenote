@@ -6,7 +6,7 @@ const url = import.meta.env.VITE_API_URL
 export default class noteApi {
 
     static post(route: string, data: Partial<Note>) {
-        const response = axios.post(url + route, data)
+        const response = axios.post(url + route, data, {withCredentials: true})
 
         return response
     }

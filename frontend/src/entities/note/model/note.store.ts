@@ -25,8 +25,13 @@ class NoteStore {
   }
 
   async createNote(note: Omit<Note, "id">) {
-    const res = await noteApi.post("notes/create/", note);
+    const res = await noteApi.post("notes/create/", {
+      title: note.title,
+      content: note.content,
+    });
+    console.log(res.data)
     runInAction(() => {
+      
       this.notes.push(res.data); // автоматически отрисуется в списке
     });
   }

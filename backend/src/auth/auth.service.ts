@@ -16,6 +16,7 @@ export class AuthService {
     if (!user || !user.password) {
       throw new UnauthorizedException('User not found or password missing');
     }
+    
     const pepperedPass = pass + process.env.PEPPER;
     const isMatch = await compare(pepperedPass, user.password);
     if (!isMatch) {
@@ -23,12 +24,12 @@ export class AuthService {
     }
     const payload = { sub: user.id, username: user.username };
     const jwtPayload = await this.jwtService.signAsync(payload)
-    
+
     return {
       access_token: await this.jwtService.signAsync(payload)
     };
   }
-  registration (createUserDto: CreateUserDto) {
+  registration(createUserDto: CreateUserDto) {
     this.userService.create(createUserDto)
   }
 
