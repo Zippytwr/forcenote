@@ -17,7 +17,9 @@ export const ListNotes = observer(() => {
     return (
         <div className="app">
             {notes.map((item) => (
+                
                 <div key={item.id}>
+                    
                     <h3>
                         {item.title}
                     </h3>

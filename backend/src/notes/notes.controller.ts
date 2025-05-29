@@ -1,16 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { Note } from './entities/note.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) { }
+  @UseGuards(AuthGuard('jwt'))
   @Post("create")
-  create(@Body() createNoteDto: CreateNoteDto) {
-    return this.notesService.create(createNoteDto)
+  create(@Body() createNoteDto: CreateNoteDto, @Req() req) {
+    const userId = req.user.id;  // здесь user.id из JwtStrategy.validate()
+    return this.notesService.create(createNoteDto, userId);
   }
+
 
   @Get()
   getAll() {

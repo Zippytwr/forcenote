@@ -13,6 +13,8 @@ export class Note {
     create_at: Date
     @Column({ type: 'timestamp' })
     updated_at: Date
+    @Column({ name: 'user_id' }) // Указываем имя в базе
+    user_id: string;             // Но в коде — camelCase
 
     @ManyToOne(() => User, user => user.notes)
     @JoinColumn({ name: 'user_id' })

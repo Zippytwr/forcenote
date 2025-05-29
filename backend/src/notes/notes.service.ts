@@ -12,14 +12,16 @@ export class NotesService {
     @InjectRepository(Note)
     private noteRepository: Repository<Note>
   ) {}
-  create(createNoteDto: CreateNoteDto): Promise<Note> {
+  create(createNoteDto: CreateNoteDto, userId: string): Promise<Note> {
     const note = this.noteRepository.create({
       id: uuidv4(),
       title: createNoteDto.title,
       content: createNoteDto.content,
       create_at: new Date(),
       updated_at: new Date(),
+      user_id: userId
     })
+    
     return this.noteRepository.save(note, {reload: true})
   }
   async delete (id: string): Promise<void>{
