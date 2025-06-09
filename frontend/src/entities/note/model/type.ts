@@ -9,3 +9,4 @@ export interface updateNoteInterface {
   title?: string;
   content?: string;
 }
+
