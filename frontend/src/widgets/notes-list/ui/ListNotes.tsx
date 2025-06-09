@@ -15,20 +15,28 @@ export const ListNotes = observer(() => {
 
     if (loading) return <div>Загрузка...</div>;
     return (
-        <div className="app">
-            {notes.map((item) => (
-                
-                <div key={item.id}>
-                    
-                    <h3>
-                        {item.title}
-                    </h3>
-                    <Markdown remarkPlugins={[remarkGfm]}>
-                        {item.content}
-                    </Markdown>
-                    <DeleteNote id={item.id} />
-                </div>
-            ))}
+        <div className="note-list" style={{ marginTop: "2rem" }}>
+            <h2 style={{ marginBottom: "1rem" }}>Ваши заметки:</h2>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+                {notes.map((note) => (
+                    <li
+                        key={note.id}
+                        style={{
+                            backgroundColor: "#2a2a2a",
+                            padding: "1rem",
+                            marginBottom: "0.5rem",
+                            borderRadius: "6px",
+                            color: "#e0e0e0",
+                            border: "1px solid #3c3c3c",
+                            cursor: "pointer"
+                        }}
+                    >
+                        <strong>{note.title}</strong>
+                        <p style={{ opacity: 0.7, marginTop: "0.3rem" }}>{note.content.slice(0, 80)}...</p>
+                        <DeleteNote id={note.id} />
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 })

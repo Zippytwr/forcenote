@@ -22,10 +22,14 @@ export class UsersService {
   
   }
   getAll() {
-    return this.userRepository.find()
+    return this.userRepository.find(
+      {
+        relations: ['notes']
+      }
+    )
   }
   findById(id: string) {
-    return this.userRepository.find({ where: { id: id } })
+    return this.userRepository.find({ where: { id: id }, relations: ['notes'] })
   }
   async findByUsername(username: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { username: username } })
@@ -35,6 +39,6 @@ export class UsersService {
     const user = this.userRepository.findBy({id: id})
     return this.userRepository.delete(id)
   }
-
+  
 
 }

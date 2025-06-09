@@ -7,8 +7,9 @@ const App: React.FC = (): React.JSX.Element => {
   return (
     <div className="app">
       <div className="button">
-        <ListNotes />
         <CreateNote />
+        <ListNotes />
+
       </div>
     </div>
   )
