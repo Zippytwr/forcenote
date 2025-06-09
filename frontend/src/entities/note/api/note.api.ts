@@ -20,7 +20,9 @@ export default class noteApi {
         return response
     }
     static getAll(route: string) {
-        const repsonse = axios.get(url + route)
+        const repsonse = axios.get(url + route, {
+            withCredentials: true
+        })
 
         return repsonse
     }

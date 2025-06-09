@@ -4,6 +4,7 @@ import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { Note } from './entities/note.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('notes')
 export class NotesController {
@@ -19,6 +20,13 @@ export class NotesController {
   @Get()
   getAll() {
     return this.notesService.findAll()
+  }
+  @Get("user")
+  @UseGuards(AuthGuard('jwt'))
+  async getByUserId(@Req() req: Request) {
+    const userId = (req.user as any).id;
+    const notes = await this.notesService.findByUser(userId)
+    return notes
   }
 
   @Delete("")

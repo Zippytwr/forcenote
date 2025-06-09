@@ -26,8 +26,11 @@ export class AuthController {
   }
   @Get('profile')
   @UseGuards(AuthGuard('jwt')) // или твой кастомный
-  getProfile(@Req() req: Request) {
-    return req.user;
+  async getProfile(@Req() req: Request) {
+    const userId = (req.user as any).id;
+
+    const user = await this.authService.getProfile(userId)
+    return user;
   }
   @Post('logout')
   @HttpCode(200)

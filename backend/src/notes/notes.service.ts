@@ -35,6 +35,9 @@ export class NotesService {
   find(id: string): Promise<Note[]> {
     return this.noteRepository.find({where: {id: id}})
   }
+  findByUser(user_id: string): Promise<Note[]> {
+    return this.noteRepository.find({where: {user_id: user_id}})
+  }
   async update(id: string, updateNoteDto: UpdateNoteDto): Promise<Note> {
     const note = await this.noteRepository.findOneBy({ id });
     if (!note) throw new Error('Note not found');

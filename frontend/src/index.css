@@ -1,0 +1,70 @@
+:root {
+    --bg: #1e1e1e;
+    --panel: #2a2a2a;
+    --border: #3c3c3c;
+    --text: #e0e0e0;
+    --accent: #7aa2f7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.editor {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 1.5rem;
+    background-color: var(--panel);
+}
+
+.editor input[type="text"] {
+    background-color: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.editor textarea {
+    flex: 1;
+    background-color: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    height: 800px;
+    resize:vertical;
+    width: 100%;
+}
+
+.editor button {
+    margin-top: 1rem;
+    align-self: flex-end;
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.editor button:hover {
+    background-color: #5b8de0;
+}

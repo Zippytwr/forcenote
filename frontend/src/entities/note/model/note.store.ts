@@ -13,7 +13,7 @@ class NoteStore {
   async fetchNotes() {
     this.loading = true;
     try {
-      const res = await noteApi.getAll("notes/");
+      const res = await noteApi.getAll("notes/user");
       runInAction(() => {
         this.notes = res.data;
       });

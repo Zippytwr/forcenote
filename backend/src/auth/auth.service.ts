@@ -32,6 +32,9 @@ export class AuthService {
   registration(createUserDto: CreateUserDto) {
     this.userService.create(createUserDto)
   }
+  getProfile (userId: string) {
+    return this.userService.findById(userId)
+  }
 
 }
 
