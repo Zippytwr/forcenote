@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { noteStore } from "../../../entities/note/model/note.store";
-import axios from "axios";
 import { userStore } from "../../../entities/user/model/user.store";
 import { observer } from "mobx-react-lite";
 
 export const CreateNote = observer(() => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     userStore.fetchProfile();
@@ -23,108 +21,84 @@ export const CreateNote = observer(() => {
       return;
     }
 
+    if (!title.trim() || !content.trim()) return;
+
+    setIsSubmitting(true);
     try {
       await noteStore.createNote({
-        title,
-        content,
+        title: title.trim(),
+        content: content.trim(),
         createdAt: "",
         updatedAt: "",
-        // user_id: userId — если backend требует, раскомментируй
+        // user_id: userId
       });
-
       setTitle("");
       setContent("");
     } catch (err) {
       console.error("Ошибка при создании заметки", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleRegister = async () => {
-    try {
-      await axios.post("http://localhost:3000/auth/register", {
-        username,
-        password,
-      }, { withCredentials: true });
-
-      await userStore.fetchProfile();
-    } catch (err) {
-      console.error("Ошибка при регистрации", err);
-    }
-  };
-
-  const handleLogin = async () => {
-    try {
-      await axios.post("http://localhost:3000/auth/login", {
-        username,
-        password,
-      }, { withCredentials: true });
-
-      await userStore.fetchProfile();
-    } catch (err) {
-      console.error("Ошибка при входе", err);
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await axios.post("http://localhost:3000/auth/logout", {}, {
-        withCredentials: true
-      });
-      noteStore.notes = []
-      userStore.logout();
-    } catch (err) {
-      console.error("Ошибка при выходе", err);
-    }
-  };
+  if (!userStore.user) {
+    return (
+      <div className="create-note-auth-warning">
+        <div className="emoji">🔐</div>
+        <p>Необходимо войти в систему для создания заметок</p>
+      </div>
+    );
+  }
 
   return (
     <>
-      <h1>
-        {userStore.user ? `Привет, ${userStore.user?.[0]?.username}` : "Не авторизован"}
-      </h1>
-      <div style={{ marginTop: "1rem" }}>
-        {!userStore.user ?
-          <>
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Имя пользователя"
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Пароль"
-            />
-            <button onClick={handleLogin}>Войти</button>
-            <button onClick={handleRegister}>Зарегистрироваться</button>
-          </>
-          :
-          <button onClick={logout}>Выйти</button>
+      <div className="create-note-wrapper">
+        <div className="create-note-header">
+          <div className="create-note-dot" />
+          <h2 className="create-note-title">Новая заметка</h2>
+        </div>
 
-        }
-      </div>
-
-      {
-        userStore.user &&
-        <>
-          <div className="editor">
+        <form className="create-note-form" onSubmit={handleSubmit}>
+          <div>
+            <label className="create-note-label">📝 Заголовок</label>
             <input
+              type="text"
+              className="create-note-input"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Заголовок"
+              placeholder="Введите заголовок заметки..."
+              disabled={isSubmitting}
             />
+          </div>
+
+          <div>
+            <label className="create-note-label">📄 Содержимое</label>
             <textarea
+              className="create-note-input create-note-textarea"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Содержимое"
+              placeholder="Напишите содержимое заметки... Поддерживается Markdown!"
+              disabled={isSubmitting}
             />
-            <button type="submit" onClick={handleSubmit}>Создать заметку</button>
           </div>
-        </>
-      }
 
-
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={isSubmitting || !title.trim() || !content.trim()}
+          >
+            {isSubmitting ? (
+              <>
+                <div className="spinner" /> Создание...
+              </>
+            ) : (
+              <>
+                <span>✨</span> Создать заметку
+              </>
+            )}
+          </button>
+        </form>
+      </div>
     </>
   );
 });
